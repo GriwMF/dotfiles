@@ -1,0 +1,117 @@
+-- lua/plugins/lsp.lua
+return {
+  {
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "hrsh7th/cmp-nvim-lsp",
+      -- Add symbols-outline for symbol navigation
+      "simrat39/symbols-outline.nvim",
+      -- Optional: Add a nice LSP UI
+      "nvim-lua/lsp-status.nvim",
+    },
+    config = function()
+      local lspconfig = require("lspconfig")
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      -- Enhanced capabilities
+      capabilities.textDocument.completion.completionItem = {
+        documentationFormat = { "markdown", "plaintext" },
+        snippetSupport = true,
+        preselectSupport = true,
+        insertReplaceSupport = true,
+        labelDetailsSupport = true,
+        deprecatedSupport = true,
+        commitCharactersSupport = true,
+        tagSupport = { valueSet = { 1 } },
+        resolveSupport = {
+          properties = {
+            "documentation",
+            "detail",
+            "additionalTextEdits",
+          },
+        },
+      }
+
+      -- Configure diagnostics
+      vim.diagnostic.config({
+        virtual_text = true,
+        signs = true,
+        update_in_insert = false,
+        underline = true,
+        severity_sort = true,
+        float = {
+          focusable = false,
+          style = "minimal",
+          border = "rounded",
+          source = "always",
+          header = "",
+          prefix = "",
+        },
+      })
+
+      -- Show diagnostics in a hover window
+      vim.o.updatetime = 250
+      vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+      -- LSP servers configuration
+      local servers = {
+        ruby_lsp = {
+          capabilities = capabilities,
+          settings = {
+            ruby = {
+              diagnostics = true,
+              completion = true,
+              hover = true,
+              formatting = true,
+            }
+          },
+          on_attach = function(client, bufnr)
+            -- Enable completion triggered by <c-x><c-o>
+            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+          end
+        },
+        lua_ls = {
+          capabilities = capabilities,
+          settings = {
+            Lua = {
+              diagnostics = {
+                globals = { 'vim' }
+              },
+              workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = false,
+              },
+              telemetry = {
+                enable = false,
+              },
+            },
+          },
+        },
+      }
+
+      -- Setup mason
+      require("mason").setup({
+        ui = {
+          icons = {
+            package_installed = "?",
+            package_pending = "?",
+            package_uninstalled = "?"
+          }
+        }
+      })
+
+      require("mason-lspconfig").setup({
+        ensure_installed = vim.tbl_keys(servers),
+        automatic_installation = true,
+      })
+
+      -- Setup all servers
+      for server, config in pairs(servers) do
+        lspconfig[server].setup(config)
+      end
+    end
+  }
+}

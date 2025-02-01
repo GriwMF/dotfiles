@@ -1,5 +1,28 @@
 return {
   {
+    "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+    build = ":TSUpdate",
+    config = function()
+      local languages = { "go", "lua", "rust", "vim", "vimdoc", "javascript", "ruby" }
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = languages,
+        auto_install = true,
+        highlight = { enable = true },
+        indent = { enable = true },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "<leader>ss",
+            node_incremental = "<leader>si",
+            scope_incremental = "<leader>sc",
+            node_decremental = "<leader>sd",
+          },
+        },
+      })
+    end,
+  },
+  {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     dependencies = {
@@ -38,5 +61,18 @@ return {
       -- load_extension, somewhere after setup function:
       require("telescope").load_extension("ui-select")
     end
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    lazy = false,
+    config = function()
+      require("nvim-tree").setup({
+        sort = { sorter = "case_sensitive" },
+        view = { width = 30 },
+        renderer = { group_empty = true },
+        filters = { dotfiles = true },
+      })
+    end,
   },
 }

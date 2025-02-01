@@ -26,45 +26,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 -- vim.g.maplocalleader = "\\"
 
--- Setup defaults
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=2")
-vim.cmd("set softtabstop=2")
-vim.cmd("set shiftwidth=2")
-vim.opt.nu = true
-vim.opt.swapfile = false
-vim.opt.smartindent = true
-vim.opt.scrolloff = 5
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.showmode = false
-vim.opt.cursorline = true
-vim.o.termguicolors = true
-vim.keymap.set('n', '<esc>', ':nohlsearch<CR>', { noremap = true, silent = true })
-
--- Copy relative, absolute and directory path
-vim.keymap.set('n', '<leader>cr', ':let @+=expand("%")<CR>')
-vim.keymap.set('n', '<leader>cp', ':let @+=expand("%:p")<CR>')
-vim.keymap.set('n', '<leader>cd', ':let @+=expand("%:p:h")<CR>')
--- Move lines up and down
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
-
--- Navigate vim panes better
-vim.keymap.set('n', '<c-k>', ':wincmd k<CR>')
-vim.keymap.set('n', '<c-j>', ':wincmd j<CR>')
-vim.keymap.set('n', '<c-h>', ':wincmd h<CR>')
-vim.keymap.set('n', '<c-l>', ':wincmd l<CR>')
-
--- Copilot
-vim.keymap.set('i', '<c-L>', '<Plug>(copilot-accept-word)')
-vim.keymap.set('i', '<c-]>', '<Plug>(copilot-next)')
--- vim.keymap.set('i', '<c-J>', 'copilot#Accept("\\<CR>")', {
---   expr = true,
---   replace_keycodes = false
--- })
--- vim.g.copilot_no_tab_map = true
-
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
@@ -83,14 +44,12 @@ require("lazy").setup({
 -- }
 -- require('onedark').load()
 -- vim.cmd.colorscheme "onedark"
-
-vim.o.termguicolors = true
 vim.cmd.colorscheme "everforest"
 
 require('lualine').setup()
 
-require 'config.telescope'
-require 'config.treesitter'
+require 'config.options'
+require 'config.keymaps'
 require 'config.clipboard'
 require 'config.test_alternative'
 require 'config.yank_highlight'
