@@ -94,6 +94,7 @@ get_git_branch() {
 }
 
 PS1='\[\e[01;34m\]\w\[\e[0m\] $(get_git_branch)\$ '
+export EDITOR=nvim
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
