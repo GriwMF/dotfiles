@@ -47,9 +47,10 @@ require("lazy").setup({
 vim.cmd.colorscheme "everforest"
 
 require('lualine').setup()
+require('colorizer').setup()
 
 require 'config.options'
 require 'config.keymaps'
 require 'config.clipboard'
-require 'config.test_alternative'
 require 'config.yank_highlight'
+require 'snippets.ruby'

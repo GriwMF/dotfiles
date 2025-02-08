@@ -86,14 +86,14 @@ get_git_branch() {
     branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [ -n "$branch" ]; then
         case "$branch" in
-            main) echo -e "\001\e[31m\002(main)\001\e[0m\002 " ;;    # Red for main
+            main|master) echo -e "\001\e[31m\002($branch)\001\e[0m\002 " ;;    # Red for main
             staging) echo -e "\001\e[33m\002(staging)\001\e[0m\002 " ;; # Yellow for staging
             *) echo -e "\001\e[01;32m\002($branch)\001\e[0m\002 " ;;    # Blue for other branches
         esac
     fi
 }
 
-PS1='\[\e[01;34m\]\w\[\e[0m\] $(get_git_branch)\$ '
+PS1='\[\e[01;34m\]\w\[\e[0m\] $(get_git_branch)\[\e[01;34m\]❯\[\e[0m\] '
 export EDITOR=nvim
 
 export NVM_DIR="$HOME/.nvm"
