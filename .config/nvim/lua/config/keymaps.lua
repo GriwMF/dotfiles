@@ -41,6 +41,13 @@ vim.keymap.set('n', '<leader>tf', function()
   })
 end)
 
+-- Tests with vim-rails
+vim.keymap.set('n', '<leader>rt', ':.Rails<CR>')
+vim.keymap.set('n', '<leader>rqt', ':.Rails!<CR>')
+vim.keymap.set('n', '<leader>rs', ':Rails<CR>')
+vim.keymap.set('n', '<leader>rqs', ':Rails!<CR>')
+vim.keymap.set('n', '<leader>rr', ':Copen|Dispatch<CR>')
+
 -- LSP
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
