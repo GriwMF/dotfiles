@@ -73,6 +73,11 @@ return {
         view = { width = 30 },
         renderer = { group_empty = true },
         filters = { dotfiles = true },
+        actions = {
+          open_file = {
+            -- quit_on_open = true,  -- Closes the tree when opening a file
+          },
+        },
       })
     end,
   },

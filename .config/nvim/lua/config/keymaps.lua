@@ -1,9 +1,18 @@
 vim.keymap.set('n', '<esc>', ':nohlsearch<CR>', { noremap = true, silent = true })
 
+-- Copy file name
+vim.keymap.set('n', '<leader>cn', ':let @+=expand("%:t")<CR>')
 -- Copy relative, absolute and directory path
 vim.keymap.set('n', '<leader>cr', ':let @+=expand("%")<CR>')
 vim.keymap.set('n', '<leader>cp', ':let @+=expand("%:p")<CR>')
 vim.keymap.set('n', '<leader>cd', ':let @+=expand("%:p:h")<CR>')
+-- Copy file name with line number
+vim.keymap.set('n', '<leader>cln', ':let @+=expand("%:t").":".line(".")<CR>')
+-- Copy relative, absolute and directory path with line number
+vim.keymap.set('n', '<leader>clr', ':let @+=expand("%").":".line(".")<CR>')
+vim.keymap.set('n', '<leader>clp', ':let @+=expand("%:p").":".line(".")<CR>')
+vim.keymap.set('n', '<leader>cld', ':let @+=expand("%:p:h").":".line(".")<CR>')
+
 -- Move lines up and down
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
@@ -22,9 +31,29 @@ vim.keymap.set('i', '<c-]>', '<Plug>(copilot-next)')
 --   replace_keycodes = false
 -- })
 
+-- LSP
+vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, {})
+vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
+vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, {})
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
+
+-- Add a key binding to toggle the diagnostic display mode
+vim.keymap.set("n", "<leader>tl", function()
+  local virtual_lines_enabled = not vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config({ virtual_lines = virtual_lines_enabled, virtual_text = not virtual_lines_enabled })
+end, { desc = "Toggle LSP Lines" })
+
 -- Telescope
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fhf', function()
+  builtin.find_files({
+    hidden = true
+  })
+end, { desc = 'Telescope find files including hidden files' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
@@ -60,4 +89,3 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
-

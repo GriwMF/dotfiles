@@ -1,3 +1,7 @@
+vim.diagnostic.config({
+  virtual_text = true,
+})
+
 return {
   {
     "williamboman/mason.nvim",
@@ -13,7 +17,9 @@ return {
       auto_install = true,
       ensure_installed = {
         "ruby_lsp",
+        "eslint",
         "lua_ls",
+        "ts_ls",
       },
     },
   },
@@ -33,29 +39,18 @@ return {
       lspconfig.html.setup({
         capabilities = capabilities
       })
-
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-      vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
-      vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, {})
-      vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-      vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, {})
-      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
-      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
-
-      -- -- Custom keymap for fixing the entire file with RuboCop
-      -- vim.keymap.set("n", "<leader>rf", function()
-        -- -- Save the current buffer
-        -- vim.cmd('write')
--- 
-        -- -- Get the absolute file path
-        -- local filepath = vim.fn.expand('%:p')
--- 
-        -- -- Run RuboCop autocorrect on the saved file
-        -- vim.cmd('!rubocop --autocorrect ' .. filepath)
--- 
-        -- -- Reload the file to reflect changes
-        -- -- vim.cmd('edit')
-      -- end, { desc = "RuboCop Autocorrect Current File" })
+      lspconfig.ts_ls.setup({
+        capabilities = capabilities,
+      })
+      lspconfig.eslint.setup({
+        capabilities = capabilities,
+      })
     end,
   },
+  {
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    config = function()
+      require("lsp_lines").setup()
+    end,
+  }
 }
