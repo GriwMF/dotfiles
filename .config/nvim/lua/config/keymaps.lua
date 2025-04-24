@@ -46,6 +46,13 @@ vim.keymap.set("n", "<leader>tl", function()
   vim.diagnostic.config({ virtual_lines = virtual_lines_enabled, virtual_text = not virtual_lines_enabled })
 end, { desc = "Toggle LSP Lines" })
 
+-- Add a keymap to toggle inlay hints
+vim.keymap.set('n', '<leader>tih', function()
+  local current = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+  vim.lsp.inlay_hint.enable(not current, { bufnr = 0 })
+  print("Inlay hints: " .. (not current and "ON" or "OFF"))
+end, { desc = "Toggle inlay hints" })
+
 -- Telescope
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
@@ -82,7 +89,22 @@ vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
 vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, {})
 vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, {})
+-- vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, {})
+vim.keymap.set("n", "<leader>cf", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local filetype = vim.bo[bufnr].filetype
+
+  if filetype == "eruby" then
+      local file_path = vim.api.nvim_buf_get_name(bufnr)
+      local cmd = string.format("erblint --autocorrect %s", vim.fn.shellescape(file_path))
+
+      vim.fn.system(cmd)
+      -- Reload the buffer to see changes
+      vim.cmd("e!")
+  else
+    vim.lsp.buf.format()
+  end
+end, { desc = "Format with Conform for eruby, LSP for others" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)

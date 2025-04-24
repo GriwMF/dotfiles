@@ -106,6 +106,9 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # disabled due to slow startup time https://github.com/github/gh-copilot/issues/88
 # eval "$(gh copilot alias -- bash)"
 
+# disable Ctrl+S and Ctrl+Q
+stty -ixon
+
 # load .bash_copilot_aliases if it exists
 if [ -f ~/.bash_copilot_aliases ]; then
     . ~/.bash_copilot_aliases
