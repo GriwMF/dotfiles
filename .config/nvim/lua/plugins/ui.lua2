@@ -1,0 +1,22 @@
+return {
+  {
+    'rebelot/kanagawa.nvim',
+    config = function()
+      require('kanagawa').setup({
+      })
+      vim.cmd('colorscheme kanagawa-dragon')
+    end
+  },
+  {
+    'nvim-lualine/lualine.nvim',
+    opts = {
+      options = {
+        icons_enabled = true,
+        theme = 'everforest',
+        -- theme = 'dracula',
+        component_separators = '|',
+        section_separators = '',
+      }
+    },
+  }
+}
