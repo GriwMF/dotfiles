@@ -51,7 +51,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # sudo subsystemctl start
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.npm-global/bin:$PATH"
+export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.npm-global/bin"
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 # disabled due to slow startup time https://github.com/github/gh-copilot/issues/88
 # eval "$(gh copilot alias -- bash)"
