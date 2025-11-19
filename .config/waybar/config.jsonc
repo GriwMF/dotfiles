@@ -42,9 +42,10 @@
     },
     // Modules configuration
     "hyprland/workspaces": {
-        "disable-scroll": true,
+        "disable-scroll": false,
         "all-outputs": true,
-        "warp-on-scroll": false,
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1",
         "format": "{name}: {icon}",
         "format-icons": {
             // "1": "",
