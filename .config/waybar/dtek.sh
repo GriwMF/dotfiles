@@ -99,11 +99,28 @@ while true; do
         # SUCCESS (Return code 0)
         # Calculate seconds until the next hour (e.g., 14:00:00)
         current_epoch=$(date +%s)
-        # 3600 - (seconds past the hour)
-        seconds_to_next_hour=$((3600 - current_epoch % 3600))
+
+        target_epoch=$(( (current_epoch / 3600 + 1) * 3600 + 10 ))
         
-        # Sleep until next hour + 10 seconds buffer
-        sleep $((seconds_to_next_hour + 10))
+        # Sleep loop: Sleep in small chunks until we reach the target
+        while true; do
+            now=$(date +%s)
+            remaining=$((target_epoch - now))
+
+            # If we passed the target (or are close), break and update
+            if [ "$remaining" -le 0 ]; then
+                break
+            fi
+
+            # If remaining time is huge, sleep max 30s at a time
+            # This allows the script to catch up quickly after system wake
+            if [ "$remaining" -gt 300 ]; then
+                sleep 300
+            else
+                sleep "$remaining"
+                break
+            fi
+        done
     else
         # FAILURE (Return code 1)
         # Retry in 5 minutes
