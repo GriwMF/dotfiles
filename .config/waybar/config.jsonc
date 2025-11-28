@@ -1,34 +1,36 @@
 // -*- mode: jsonc -*-
 {
     // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "position": "top", // Waybar position (top|bottom|left|right)
     "height": 30, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
+    "output": ["DP-3"],
     // Choose the order of the modules
     "modules-left": [
+        "tray",
         "hyprland/workspaces",
         "custom/media"
     ],
     "modules-center": [
-        "hyprland/window"
+        "hyprland/window",
     ],
     "modules-right": [
+        "custom/dtek",
         "mpd",
-        "idle_inhibitor",
+        //"idle_inhibitor",
         "pulseaudio",
         //"network",
-        "power-profiles-daemon",
+        //"power-profiles-daemon",
         "cpu",
         "memory",
-        "temperature",
-        "backlight",
-        "keyboard-state",
+        //"temperature",
+        //"backlight",
+        //"keyboard-state",
         "hyprland/language",
         // "battery",
         // "battery#bat2",
         "clock",
-        "tray",
         "custom/power"
     ],
     "hyprland/language": {
@@ -119,14 +121,45 @@
         //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
         // }
     },
+    // https://github.com/Alexays/Waybar/wiki/Module:-Clock
+    // "clock": {
+    //     // "timezone": "America/New_York",
+    //     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    //     "calendar": {
+    //       "format": {
+    //         "today":      "<span color='#ff6699'><b><u>{}</u></b></span>",
+    //       },
+    //     },
+    //     "format-alt": "{:%Y-%m-%d}",
+    // },
     "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+        "format": "{:%H:%M}",
+        "format-alt": "{:%A, %B %d, %Y (%R)}",
+        "tooltip-format": "<tt><big>{calendar}</big></tt>",
+        //"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "locale": "en_GB.UTF-8",
+        "calendar": {
+                    // "mode"          : "year",
+                    "mode-mon-col"  : 3,
+                    "weeks-pos"     : "right",
+                    "on-scroll"     : 1,
+                    "format": {
+                              "months":     "<span color='#ffead3'><b>{}</b></span>",
+                              "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                              "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                              "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                              "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+                              }
+                    },
+        "actions":  {
+                    "on-click-right": "mode",
+                    "on-scroll-up": "shift_down",
+                    "on-scroll-down": "shift_up"
+                    }
     },
     "cpu": {
         "format": "{usage}% ",
-        "tooltip": false
+        //"tooltip": false
     },
     "memory": {
         "format": "{}% "
@@ -217,5 +250,11 @@
         "format": "⏻",
         "tooltip": false,
         "on-click": "$HOME/.config/waybar/power-menu.sh"
-    }
+    },
+    "custom/dtek": {
+        "exec": "~/.config/waybar/dtek.sh",
+        "return-type": "json",
+        "format": "{}",
+        "tooltip": true
+    },
 }
